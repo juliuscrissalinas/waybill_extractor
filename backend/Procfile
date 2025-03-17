@@ -1,0 +1,1 @@
+web: gunicorn waybill_project.wsgi:application 
