@@ -40,7 +40,6 @@ ALLOWED_HOSTS = os.environ.get(
 if not DEBUG:
     ALLOWED_HOSTS.extend(
         [
-            "waybill-extractor-backend.onrender.com",
             "waybill-extractor-frontend.onrender.com",
             "waybill-extractor.onrender.com",
         ]
@@ -72,7 +71,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",  # Move CORS middleware to the top
+    "corsheaders.middleware.CorsMiddleware",  # Must be at the top
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -191,14 +190,18 @@ CORS_ALLOWED_ORIGINS = [
     "https://waybill-extractor.onrender.com",
 ]
 
-# Also allow CORS from the Render domain
-CORS_ALLOW_ALL_ORIGINS = True  # Temporarily set to True to debug CORS issues
-# CORS_ORIGIN_WHITELIST = CORS_ALLOWED_ORIGINS  # Not needed when CORS_ALLOW_ALL_ORIGINS is True
+# CORS settings for development
+if DEBUG:
+    CORS_ALLOW_ALL_ORIGINS = True
+else:
+    CORS_ALLOW_ALL_ORIGINS = False
+    CORS_ALLOWED_ORIGINS = [
+        "https://waybill-extractor-frontend.onrender.com",
+        "https://waybill-extractor.onrender.com",
+    ]
 
-# Add CORS_ALLOW_CREDENTIALS
+# Additional CORS settings
 CORS_ALLOW_CREDENTIALS = True
-
-# Add CORS_ALLOW_METHODS
 CORS_ALLOW_METHODS = [
     "DELETE",
     "GET",
@@ -208,7 +211,6 @@ CORS_ALLOW_METHODS = [
     "PUT",
 ]
 
-# Add CORS_ALLOW_HEADERS
 CORS_ALLOW_HEADERS = [
     "accept",
     "accept-encoding",
@@ -220,6 +222,12 @@ CORS_ALLOW_HEADERS = [
     "x-csrftoken",
     "x-requested-with",
 ]
+
+# Expose headers if needed
+CORS_EXPOSE_HEADERS = ["Content-Type", "X-CSRFToken"]
+
+# Maximum age for preflight requests
+CORS_PREFLIGHT_MAX_AGE = 86400  # 24 hours
 
 # Security settings for production
 if not DEBUG:
