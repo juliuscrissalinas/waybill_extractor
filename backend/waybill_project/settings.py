@@ -154,8 +154,25 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
-# Use the basic WhiteNoise storage for now
-STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
+
+# Use the simplest WhiteNoise storage option
+STATICFILES_STORAGE = "whitenoise.storage.StaticFilesStorage"
+
+# Add proper MIME types for WhiteNoise
+WHITENOISE_MIMETYPES = {
+    ".css": "text/css",
+    ".js": "application/javascript",
+    ".json": "application/json",
+    ".html": "text/html",
+    ".txt": "text/plain",
+    ".png": "image/png",
+    ".jpg": "image/jpeg",
+    ".jpeg": "image/jpeg",
+    ".gif": "image/gif",
+    ".svg": "image/svg+xml",
+    ".woff": "font/woff",
+    ".woff2": "font/woff2",
+}
 
 # Media files (Uploaded files)
 MEDIA_URL = "/media/"

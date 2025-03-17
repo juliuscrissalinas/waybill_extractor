@@ -17,6 +17,7 @@ from datetime import datetime
 import os
 import base64
 from mistralai import Mistral
+from django.shortcuts import render
 
 
 # Simple view to test API
@@ -588,3 +589,20 @@ class WaybillImageViewSet(viewsets.ModelViewSet):
 
         wb.save(response)
         return response
+
+
+def index(request):
+    """A simple index view to help with debugging."""
+    return render(
+        request,
+        "waybill/index.html",
+        {
+            "title": "Waybill Extractor API",
+            "api_endpoints": [
+                "/api/extraction-models/",
+                "/api/waybills/",
+                "/api/test-api/",
+                "/admin/",
+            ],
+        },
+    )

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 10px;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .endpoints {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ title }}</h1>
+    <p>Welcome to the Waybill Extractor API. This API allows you to extract information from waybill images.</p>
+    
+    <div class="endpoints">
+        <h2>Available Endpoints:</h2>
+        <ul>
+            {% for endpoint in api_endpoints %}
+            <li><a href="{{ endpoint }}">{{ endpoint }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    
+    <div class="debug">
+        <h2>Debug Information:</h2>
+        <p>If you're seeing static file errors, check the following:</p>
+        <ul>
+            <li>Static URL: {{ STATIC_URL }}</li>
+            <li>Static Root: {{ STATIC_ROOT }}</li>
+            <li>Static Directories: {{ STATICFILES_DIRS }}</li>
+        </ul>
+    </div>
+</body>
+</html> 
