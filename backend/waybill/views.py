@@ -209,6 +209,10 @@ class WaybillImageViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_503_SERVICE_UNAVAILABLE,
             )
 
+        # Ensure media directory exists
+        media_root = os.path.join(settings.BASE_DIR, "media")
+        os.makedirs(media_root, exist_ok=True)
+
         uploaded_images = []
         uploaded_ids = []  # Track the IDs of uploaded waybills
 
@@ -240,21 +244,25 @@ class WaybillImageViewSet(viewsets.ModelViewSet):
 
                     # Create ExtractedData record
                     ExtractedData.objects.create(
-                        waybill_image=waybill_image, data=extracted_data
+                        waybill_image=waybill_image,
+                        extracted_data=extracted_data,  # Changed from data to extracted_data
                     )
 
                     uploaded_images.append(waybill_image)
 
                 except Exception as e:
                     print(f"Error processing image: {str(e)}")
-                    # Handle the error appropriately
+                    # Delete the waybill image if processing failed
+                    waybill_image.delete()
+                    return Response(
+                        {"error": f"Error processing image: {str(e)}"},
+                        status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                    )
 
             except Exception as e:
-                # Log the specific error
-                print(f"Error creating waybill image: {str(e)}")
-
+                print(f"Error uploading image: {str(e)}")
                 return Response(
-                    {"error": f"Error creating waybill image: {str(e)}"},
+                    {"error": f"Error uploading image: {str(e)}"},
                     status=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 )
 
