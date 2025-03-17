@@ -44,7 +44,7 @@ if [ ! -f ../.env ]; then
 # For AWS Textract (optional)
 AWS_ACCESS_KEY_ID=your_access_key_here
 AWS_SECRET_ACCESS_KEY=your_secret_key_here
-AWS_REGION=your_region_here
+AWS_REGION=us-east-1
 
 # For Mistral AI
 MISTRAL_API_KEY=your_mistral_api_key_here

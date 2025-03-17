@@ -153,7 +153,8 @@ const WaybillUploader = () => {
           .replace(/^\/+/, '')  // Remove leading slashes
           .replace(/^api\//, ''); // Remove 'api/' prefix if present
         
-        url = `${baseUrl}/${cleanDownloadUrl}`;
+        // Use the waybills endpoint instead of waybill-images
+        url = `${baseUrl}/waybills/download_excel/?ids=${uploadedWaybillIds.join(',')}`;
       } else {
         url = `${API_BASE_URL.replace(/\/+$/, '')}/waybills/download_excel/`;
       }
