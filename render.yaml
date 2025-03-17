@@ -35,4 +35,4 @@ services:
       - key: NODE_VERSION
         value: 18.x
       - key: REACT_APP_API_BASE_URL
-        value: https://waybill-extractor-backend.onrender.com/api
+        value: https://waybill-extractor.onrender.com/api/
