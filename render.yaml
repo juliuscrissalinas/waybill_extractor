@@ -3,8 +3,8 @@ services:
   - type: web
     name: waybill-extractor-backend
     env: python
-    buildCommand: cd backend && pip install -r requirements.txt && python manage.py migrate && python manage.py collectstatic --noinput
-    startCommand: cd backend && gunicorn waybill_project.wsgi:application --bind 0.0.0.0:$PORT --log-level debug
+    buildCommand: cd backend && chmod +x build.sh && ./build.sh
+    startCommand: cd backend && gunicorn waybill_project.asgi:application --bind 0.0.0.0:$PORT --workers 4 --worker-class uvicorn.workers.UvicornWorker --log-level debug
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.0
