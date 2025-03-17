@@ -156,12 +156,38 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://localhost:3001",
-    "https://waybill-extractor-frontend.onrender.com"
+    "https://waybill-extractor-frontend.onrender.com",
 ]
 
 # Also allow CORS from the Render domain
-CORS_ALLOW_ALL_ORIGINS = False
-CORS_ORIGIN_WHITELIST = CORS_ALLOWED_ORIGINS
+CORS_ALLOW_ALL_ORIGINS = True  # Temporarily set to True to debug CORS issues
+# CORS_ORIGIN_WHITELIST = CORS_ALLOWED_ORIGINS  # Not needed when CORS_ALLOW_ALL_ORIGINS is True
+
+# Add CORS_ALLOW_CREDENTIALS
+CORS_ALLOW_CREDENTIALS = True
+
+# Add CORS_ALLOW_METHODS
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
+
+# Add CORS_ALLOW_HEADERS
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]
 
 # Security settings for production
 if not DEBUG:
