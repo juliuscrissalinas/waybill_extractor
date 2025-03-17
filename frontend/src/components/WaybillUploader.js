@@ -31,10 +31,7 @@ import ImageIcon from '@mui/icons-material/Image';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 
 // Define the API base URL
-// Use environment variable if available, otherwise use the Render URL, with localhost as fallback
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 
-                    'https://waybill-extractor-backend.onrender.com/api' || 
-                    'http://localhost:8002/api';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 console.log('Using API base URL:', API_BASE_URL);
 
@@ -83,7 +80,7 @@ const WaybillUploader = () => {
           request: err.request ? 'Request was made but no response was received' : 'No request was made'
         });
         
-        setError(`Failed to fetch extraction models: ${err.message}. Make sure the backend server is running on port 8002.`);
+        setError(`Failed to fetch extraction models: ${err.message}. Please check that the backend server is running.`);
       }
     };
     fetchModels();
