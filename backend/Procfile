@@ -1,1 +1,1 @@
-web: gunicorn waybill_project.wsgi:application 
+web: gunicorn waybill_project.wsgi:application --log-file - 
