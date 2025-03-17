@@ -31,7 +31,12 @@ import ImageIcon from '@mui/icons-material/Image';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 
 // Define the API base URL
-const API_BASE_URL = 'http://localhost:8002/api';
+// Use environment variable if available, otherwise use the Render URL, with localhost as fallback
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 
+                    'https://waybill-extractor-backend.onrender.com/api' || 
+                    'http://localhost:8002/api';
+
+console.log('Using API base URL:', API_BASE_URL);
 
 const WaybillUploader = () => {
   const theme = useTheme();
