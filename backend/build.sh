@@ -12,5 +12,8 @@ mkdir -p staticfiles
 # Apply migrations first
 python manage.py migrate
 
+# Copy Django REST Framework static files
+python manage.py copy_drf_static
+
 # Collect static files
 python manage.py collectstatic --no-input 
