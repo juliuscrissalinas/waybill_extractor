@@ -153,10 +153,15 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # CORS settings
-CORS_ALLOWED_ORIGINS = os.environ.get(
-    "CORS_ALLOWED_ORIGINS",
-    "http://localhost:3000,http://localhost:3001,https://waybill-extractor-frontend.onrender.com",
-).split(",")
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://localhost:3001",
+    "https://waybill-extractor-frontend.onrender.com"
+]
+
+# Also allow CORS from the Render domain
+CORS_ALLOW_ALL_ORIGINS = False
+CORS_ORIGIN_WHITELIST = CORS_ALLOWED_ORIGINS
 
 # Security settings for production
 if not DEBUG:
