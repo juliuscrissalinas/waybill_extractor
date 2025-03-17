@@ -144,16 +144,18 @@ const WaybillUploader = () => {
     try {
       setUploading(true);
       
-      // Use the download URL with waybill IDs if available, otherwise use the default URL
+      // Construct the download URL properly
       let url;
       if (downloadUrl) {
-        // Remove the leading /api if it exists in downloadUrl since API_BASE_URL already includes it
-        const cleanDownloadUrl = downloadUrl.startsWith('/api/') 
-          ? downloadUrl.substring(4) // Remove the first 4 characters (/api)
-          : downloadUrl;
-        url = `${API_BASE_URL}/${cleanDownloadUrl}`;
+        // Remove any leading or trailing slashes from both API_BASE_URL and downloadUrl
+        const baseUrl = API_BASE_URL.replace(/\/+$/, '');
+        const cleanDownloadUrl = downloadUrl
+          .replace(/^\/+/, '')  // Remove leading slashes
+          .replace(/^api\//, ''); // Remove 'api/' prefix if present
+        
+        url = `${baseUrl}/${cleanDownloadUrl}`;
       } else {
-        url = `${API_BASE_URL}/waybills/download_excel/`;
+        url = `${API_BASE_URL.replace(/\/+$/, '')}/waybills/download_excel/`;
       }
       
       console.log('Download URL:', url);

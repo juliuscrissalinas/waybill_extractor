@@ -219,6 +219,9 @@ class WaybillImageViewSet(viewsets.ModelViewSet):
                     image=image, extraction_model_id=extraction_model_id
                 )
 
+                # Store the ID for the download URL
+                uploaded_ids.append(waybill_image.id)
+
                 # Process the image based on the selected model
                 try:
                     if extraction_model.name.lower() == "aws textract":
@@ -235,55 +238,16 @@ class WaybillImageViewSet(viewsets.ModelViewSet):
                             waybill_image.image.path
                         )
 
-                    # For demo purposes, if API keys are not set, use dummy data
-                    if (
-                        extraction_model.name.lower() == "aws textract"
-                        and not settings.AWS_ACCESS_KEY_ID
-                    ) or (
-                        extraction_model.name.lower() == "mistral"
-                        and not settings.MISTRAL_API_KEY
-                    ):
-                        extracted_data = {
-                            "sender": {
-                                "name": "Demo Sender",
-                                "address": "123 Demo Street, Demo City, 12345",
-                                "phone": "123-456-7890",
-                            },
-                            "recipient": {
-                                "name": "Demo Recipient",
-                                "address": "456 Test Avenue, Test City, 67890",
-                                "phone": "987-654-3210",
-                            },
-                            "shipment": {
-                                "tracking_number": "DEMO123456789",
-                                "date": "2025-03-17",
-                                "weight": "2.5 kg",
-                                "service_type": "Express",
-                            },
-                            "note": "This is demo data since API keys are not configured.",
-                        }
-
+                    # Create ExtractedData record
                     ExtractedData.objects.create(
-                        waybill_image=waybill_image, extracted_data=extracted_data
+                        waybill_image=waybill_image, data=extracted_data
                     )
-                    waybill_image.processed = True
-                    waybill_image.save()
 
-                    uploaded_images.append(WaybillImageSerializer(waybill_image).data)
-                    uploaded_ids.append(waybill_image.id)  # Add the ID to our list
+                    uploaded_images.append(waybill_image)
 
                 except Exception as e:
-                    # Log the specific error
                     print(f"Error processing image: {str(e)}")
-
-                    # Delete the waybill image if processing failed
-                    waybill_image.delete()
-
-                    # Return a more specific error
-                    return Response(
-                        {"error": f"Error processing image: {str(e)}"},
-                        status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                    )
+                    # Handle the error appropriately
 
             except Exception as e:
                 # Log the specific error
@@ -294,15 +258,25 @@ class WaybillImageViewSet(viewsets.ModelViewSet):
                     status=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 )
 
-        # Return both the serialized data and the IDs for download
-        return Response(
-            {
-                "waybills": uploaded_images,
-                "ids": uploaded_ids,
-                "download_url": f"/waybill-images/download_excel/?ids={','.join(map(str, uploaded_ids))}",
-            },
-            status=status.HTTP_201_CREATED,
-        )
+        if uploaded_images:
+            # Construct the download URL without /api/ prefix
+            download_url = (
+                f"waybill-images/download_excel/?ids={','.join(map(str, uploaded_ids))}"
+            )
+
+            return Response(
+                {
+                    "message": f"Successfully uploaded {len(uploaded_images)} images",
+                    "ids": uploaded_ids,
+                    "download_url": download_url,
+                },
+                status=status.HTTP_201_CREATED,
+            )
+        else:
+            return Response(
+                {"error": "Failed to upload any images"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
 
     @action(detail=False, methods=["get"])
     def download_excel(self, request):
