@@ -42,8 +42,8 @@ if [ ! -f ../.env ]; then
     echo "Creating .env file..."
     cat > ../.env << EOL
 # For AWS Textract (optional)
-AWS_ACCESS_KEY_ID=your_access_key_here
-AWS_SECRET_ACCESS_KEY=your_secret_key_here
+AWS_ACCESS_KEY_ID=your_aws_access_key_id_here
+AWS_SECRET_ACCESS_KEY=your_aws_secret_access_key_here
 AWS_REGION=us-east-1
 
 # For Mistral AI

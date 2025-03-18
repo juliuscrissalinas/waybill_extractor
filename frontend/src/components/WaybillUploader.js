@@ -33,6 +33,13 @@ import UploadFileIcon from '@mui/icons-material/UploadFile';
 // Define the API base URL
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
+console.log('Environment:', {
+  NODE_ENV: process.env.NODE_ENV,
+  REACT_APP_API_BASE_URL: process.env.REACT_APP_API_BASE_URL,
+  API_BASE_URL: API_BASE_URL,
+  allEnvVars: process.env
+});
+
 console.log('Using API base URL:', API_BASE_URL);
 
 const WaybillUploader = () => {

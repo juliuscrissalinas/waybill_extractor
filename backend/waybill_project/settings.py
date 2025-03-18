@@ -14,11 +14,16 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
-load_dotenv()
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load environment variables from .env file
+env_path = BASE_DIR / ".env"
+print("Loading .env file from:", env_path)
+if env_path.exists():
+    load_dotenv(env_path, override=True)
+else:
+    print("Warning: .env file not found at:", env_path)
 
 
 # Quick-start development settings - unsuitable for production
