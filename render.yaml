@@ -4,7 +4,7 @@ services:
     name: waybill-extractor-backend
     env: python
     buildCommand: cd backend && chmod +x build.sh && ./build.sh
-    startCommand: cd backend && PYTHONPATH=/opt/render/project/src python manage.py collectstatic --noinput && gunicorn waybill_project.asgi:application --bind 0.0.0.0:$PORT --workers 4 --worker-class uvicorn.workers.UvicornWorker --log-level debug
+    startCommand: cd backend && gunicorn waybill_project.asgi:application --bind 0.0.0.0:$PORT --workers 4 --worker-class uvicorn.workers.UvicornWorker --log-level debug
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.0
@@ -24,6 +24,10 @@ services:
         sync: false
       - key: AWS_SECRET_ACCESS_KEY
         sync: false
+      - key: STATIC_URL
+        value: /static/
+      - key: DISABLE_COLLECTSTATIC
+        value: 0
 
   # Frontend service
   - type: web
@@ -35,4 +39,4 @@ services:
       - key: NODE_VERSION
         value: 18.x
       - key: REACT_APP_API_BASE_URL
-        value: https://waybill-extractor.onrender.com/api/
+        value: https://waybill-extractor-backend.onrender.com/api/

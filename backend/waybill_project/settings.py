@@ -160,7 +160,7 @@ STATICFILES_DIRS = [
 ]
 
 # Use the simplest WhiteNoise storage option
-STATICFILES_STORAGE = "whitenoise.storage.StaticFilesStorage"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Add proper MIME types for WhiteNoise
 WHITENOISE_MIMETYPES = {
