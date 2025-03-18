@@ -19,6 +19,10 @@ chmod -R 755 media/
 # Apply database migrations
 python manage.py migrate
 
+# Create initial extraction models
+echo "Creating initial extraction models..."
+python create_extraction_models.py
+
 # Explicitly install DRF CSS and JS into our static directory
 SITE_PACKAGES=$(python -c "import site; print(site.getsitepackages()[0])")
 echo "Using site-packages: $SITE_PACKAGES"
