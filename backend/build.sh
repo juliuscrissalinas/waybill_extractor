@@ -2,18 +2,22 @@
 # Exit on error
 set -o errexit
 
-# Install dependencies
+# Install Python dependencies
 pip install -r requirements.txt
 
-# Ensure needed directories exist with proper permissions
-mkdir -p static staticfiles media
-chmod -R 755 static staticfiles media
+# Create necessary directories
+mkdir -p staticfiles/rest_framework
+mkdir -p media
 
-# Apply migrations first
+# Collect static files
+python manage.py collectstatic --noinput --clear
+
+# Ensure proper permissions
+chmod -R 755 staticfiles/
+chmod -R 755 media/
+
+# Apply database migrations
 python manage.py migrate
-
-# Copy Django REST Framework static files
-python manage.py collectstatic --noinput
 
 # Explicitly install DRF CSS and JS into our static directory
 SITE_PACKAGES=$(python -c "import site; print(site.getsitepackages()[0])")

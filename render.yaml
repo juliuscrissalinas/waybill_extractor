@@ -28,6 +28,13 @@ services:
         value: /static/
       - key: DISABLE_COLLECTSTATIC
         value: 0
+      - key: DJANGO_SETTINGS_MODULE
+        value: waybill_project.settings
+    staticPublishPath: ./backend/staticfiles
+    disk:
+      name: django-static
+      mountPath: /opt/render/project/src/backend/staticfiles
+      sizeGB: 1
 
   # Frontend service
   - type: web

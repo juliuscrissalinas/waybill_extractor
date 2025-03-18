@@ -151,18 +151,19 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
-
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-]
 
-# Use the simplest WhiteNoise storage option
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+# Remove STATICFILES_DIRS if the directory doesn't exist
+if os.path.exists(os.path.join(BASE_DIR, "static")):
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, "static"),
+    ]
 
-# Add proper MIME types for WhiteNoise
+# WhiteNoise configuration
+STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"  # Changed from CompressedManifestStaticFilesStorage
+
+# Force MIME types for static files
 WHITENOISE_MIMETYPES = {
     ".css": "text/css",
     ".js": "application/javascript",
@@ -177,6 +178,13 @@ WHITENOISE_MIMETYPES = {
     ".woff": "font/woff",
     ".woff2": "font/woff2",
 }
+
+# WhiteNoise configuration
+WHITENOISE_INDEX_FILE = True
+WHITENOISE_ROOT = STATIC_ROOT
+WHITENOISE_USE_FINDERS = True
+WHITENOISE_AUTOREFRESH = True
+WHITENOISE_MANIFEST_STRICT = False
 
 # Media files (Uploaded files)
 MEDIA_URL = "/media/"
